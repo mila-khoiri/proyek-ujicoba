@@ -1,0 +1,141 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+body {
+    background-color: #f8fafd;
+    color: #334156;
+}
+
+.header {
+    background-color: #fffffa;
+    border-bottom: 1px solid #e2e8f1;
+    padding: 16px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-btn {
+    background-color: #4f46e6;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.main-container {
+    max-width: 1100px;
+    margin: 30px auto;
+    display: flex;
+    gap: 24px;
+    padding: 0 16px;
+}
+
+.products-section {
+    flex: 1;
+}
+
+.products-section h2 {
+    margin-bottom: 20px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.product-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #e2e8f1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.product-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+
+.product-card .price {
+    color: #4f46e6;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 8px 0;
+}
+
+.product-card button {
+    background-color: #10b982;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+}
+
+.cart-sidebar {
+    width: 320px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f1;
+    height: fit-content;
+}
+
+.cart-sidebar h2 {
+    margin-bottom: 16px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f1f5fa;
+}
+
+.cart-summary {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 2px dashed #e2e8f1;
+}
+
+.checkout-btn {
+    width: 100%;
+    background-color: #4f46e6;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-top: 12px;
+    cursor: pointer;
+}

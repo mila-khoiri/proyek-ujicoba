@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<section id="authSection" style="background: white; padding: 16px; border-radius: 12px; border: 1px solid #e2e801; margin-bottom: 24px;">
+    <div id="loginFormContainer">
+        <h3 style="margin-bottom: 10px;">🔐Login Admin</h3>
+
+        <form id="loginForm" style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <input type="text" id="authUsername" placeholder="Username" required style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5f2;"/>
+            <input type="password" id="authPassword" placeholder="Password" required style="padding: 8px; border-radius: 6px; border: 1px solid#cbd5f2;"/>
+            <button type="submit" style="background: #4f46f6; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer;">Login</button>
+        </form>
+        
+        <button type="button" id="registerBtn" style="background: #64749c; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Register</button>
+    </div>
+
+    <div id="userInfoContainer" style="display: none; justify-content: space-between; align-items: center;">
+        <p>Selamat datang, Admin! 👋</p>
+        <button id="logoutBtn" style="background: #ef4455; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;">Logout</button>
+    </div>
+</section>
+
+<section id="adminProductForm" style="display: none; background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e801; margin-bottom: 24px;">
+    <h3>➕ Tambah Produk Baru</h3>
+    <form id="addProductForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 12px;">
+        <input type="text" id="name" placeholder="Nama Produk" required style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5f2;"/>
+        <input type="number" id="price" placeholder="Harga (Rp)" required style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5f2;"/>
+        <input type="number" id="stock" placeholder="Stok" required style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5f2;"/>
+        <input type="url" id="imageUrl" placeholder="URL Gambar (https://...)" required style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5f2;"/>
+        <input type="text" id="description" placeholder="Deskripsi" required style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5f2; grid-column: 1/-1;"/>
+        <button type="submit" style="background: #4f46f6; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer; grid-column: 1/-1;">
+            Simpan Produk
+        </button>
+    </form>
+</section>
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width", initial-scale="1.0"/>
+    <title>Toko Online Saya</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <h1>🛍️ Toko Online</h1>
+            <button id="cartToggleBtn" class="cart-btn">
+                🛒 Keranjang (<span id="cartCount">0</span>)
+            </button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        
+        <section class="products-section">
+            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Katalog Produk</h2>
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Cari produk..."
+                    style="padding: 8px 20px; border-radius: 6px; border: 1px solid #cbd5f2; width: 220px; outline: none;"
+                />
+            </div>
+
+            <div id="productGrid" class="product-grid">
+            </div>
+        </section>
+
+        <aside id="cartSidebar" class="cart-sidebar">
+            <h2>Keranjang Belanja</h2>
+            <div id="cartItems" class="cart-items">
+            </div>
+            <div class="cart-summary">
+                <p>Total: <strong id="cartTotal">Rp 0</strong></p>
+                <button id="checkoutBtn" class="checkout-btn">Checkout</button>
+            </div>
+        </aside>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
