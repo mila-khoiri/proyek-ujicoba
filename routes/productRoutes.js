@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const {upload} = require('../config/cloudinary');
 const Product = require('../models/Product');
 const verifyToken = require('../middleware/auth');
 
@@ -30,6 +31,26 @@ router.post('/', verifyToken, async(req, res) => {
         res.status(201).json(createdProduct);
     } catch (error) {
         res.status(400).json({message: error.message});
+    }
+});
+
+router.post('/', upload.single('image'), async(req, res) => {
+    try {
+        const {name, price, description} = req.body;
+
+        const imageUrl = req.file ? req.file.path : '';
+
+        const newProduct = new Product({
+            name,
+            price,
+            description,
+            image: imageUrl,
+        });
+
+        await newProduct.save();
+        res.status(201).json(newProduct);
+    } catch(error) {
+        res.status(500).json({error: error.message});
     }
 });
 

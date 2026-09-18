@@ -29,39 +29,23 @@ function handleSearch(e) {
 }
 
 function renderProducts(products) {
-    const productGrid = document.getElementById('productGrid');
-    productGrid.innerHTML = '';
-
-    if (products.length === 0) {
-        productGrid.innerHTML = '<p style="grid-column: 1/-1; color: #64759c;">Produk tidak ditemukan.</p>';
-        return;
-    }
+    const container = document.getElementById('productContainer');
+    container.innerHTML = '';
 
     products.forEach(product => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        card.innerHTML = `
-            <img src="${product.imageUrl}" alt="${product.name}">
-            <h3>${product.name}</h3>
-            <p style="font-size: 0.85rem; color: #64748c;">${product.description}</p>
-            <div class="price">Rp ${product.price.toLocaleString('id-ID')}</div>
-            <p style="font-size: 0.8rem; margin-bottom: 8px;">Stok: ${product.stock}</p>
+        const imgUrl = product.image || 'https://via.placeholder.com/150';
 
-            <div style="display: flex; gap: 6px; flex-direction: column;">
-                <button onclick= "addToCart('${product._id}', '${product.name}', ${product.price}, ${product.stock})">
-                    + Keranjang
-                </button>
-                <div style="display: flex; gap: 6px;">
-                    <button onclick="editProduct('${product._id}', '${product.name}', ${product.price}, ${product.stock})" style="background-color: #f59e1c; flex: 1;">
-                        ✏️ Edit
-                    </button>
-                    <button onclick="deleteProduct('${product._id}')" style="background-color: #ef4455; flex: 1;">
-                        🗑️ Hapus
-                    </button>
+        container.innerHTML += `
+            <div class="card mb-3" style="width: 18rem;">
+                <img src="${imgUrl}" class="card-img-top" alt="${product.name}">
+                <div class="card-body">
+                    <h5 class="card-title">${product.name}</h5>
+                    <p class="card-text">Rp ${product.price.toLocaleString('id-ID')}</p>
+                    <p class="card-text">${product.description || ''}</p>
+                    <button class="btn btn-sm btn-success">Tambah ke Keranjang</button>
                 </div>
             </div>
         `;
-        productGrid.appendChild(card);
     });
 }
 
@@ -153,31 +137,35 @@ document.getElementById('checkoutBtn').addEventListener('click', async() => {
 document.getElementById('addProductForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const newProduct = {
-        name: document.getElementById('name').value.trim(),
-        price: Number(document.getElementById('price').value),
-        stock: Number(document.getElementById('stock').value),
-        imageUrl: document.getElementById('imageUrl').value.trim(),
-        description: document.getElementById('description').value.trim()
-    };
+    const name = document.getElementById('productName').value;
+    const price = document.getElementById('productPrice').value;
+    const description = document.getElementById('productDescription').value;
+    const imageFile = document.getElementById('productImage').files[0];
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('description', description);
+    formData.append('image', imageFile);
 
     try {
-        const res = await fetch('/api/products', {
+        const response = await fetch('/api/products', {
             method:'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(newProduct)
+            body: formData,
         });
 
-        if(res.ok) {
+        const data = await response.json();
+
+        if(response.ok) {
             alert('Produk berhasil ditambahkan!');
             document.getElementById('addProductForm').reset();
-            fetchProducts();
+            loadProducts();
         } else {
-            const errData = await res.json();
-            alert(`Gagal menambah produk: ${errData.message}`);
+            alert('Gagal menambah produk: ' + (data.error || 'Terjadi kesalahan'));
         }
-    } catch(err) {
-        console.error('Error saat menambah produk: ', err);
+    } catch(error) {
+        console.error('Error uploading product: ', error);
+        alert('Terjadi kesalahan koneksi.');
     }
 });
 

@@ -23,14 +23,27 @@
 <section id="adminProductForm" style="display: none; background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e801; margin-bottom: 24px;">
     <h3>➕ Tambah Produk Baru</h3>
     <form id="addProductForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 12px;">
-        <input type="text" id="name" placeholder="Nama Produk" required style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5f2;"/>
-        <input type="number" id="price" placeholder="Harga (Rp)" required style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5f2;"/>
-        <input type="number" id="stock" placeholder="Stok" required style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5f2;"/>
-        <input type="url" id="imageUrl" placeholder="URL Gambar (https://...)" required style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5f2;"/>
-        <input type="text" id="description" placeholder="Deskripsi" required style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5f2; grid-column: 1/-1;"/>
-        <button type="submit" style="background: #4f46f6; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer; grid-column: 1/-1;">
-            Simpan Produk
-        </button>
+        <div class="mb-3">
+            <label for="productName" class="form-label">Nama Produk</label>
+            <input type="text" id="productName" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="productPrice" class="form-label">Harga</label>
+            <input type="number" id="productPrice" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="productDescription" class="form-label">Deskripsi</label>
+            <textarea id="productDescription" class="form-control"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="productImage" class="form-label">Gambar Produk</label>
+            <input type="file" id="productImage" class="form-control" accept="image/*" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Tambah Produk</button>
     </form>
 </section>
 
