@@ -11,8 +11,18 @@ document.addEventListener('DOMContentLoaded', () => {
 async function fetchProducts() {
     try {
         const res = await fetch('/api/products');
+
+        if(!res.ok) {
+            throw new Error(`Server error: ${res.status}`);
+        }
+
         allProducts = await res.json();
-        renderProducts(allProducts);
+
+        if(Array.isArray(allProducts)) {
+            renderProducts(allProducts);
+        } else {
+            console.error('Data produk bukan array:', allProducts);
+        }
     } catch(err) {
         console.error('Gagal mengambil data produk: ', err);
     }
@@ -31,7 +41,7 @@ function handleSearch(e) {
 function renderProducts(products) {
     const container = document.getElementById('product-container');
     if(!container) return;
-    
+
     container.innerHTML = '';
 
     products.forEach(product => {
