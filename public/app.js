@@ -29,7 +29,9 @@ function handleSearch(e) {
 }
 
 function renderProducts(products) {
-    const container = document.getElementById('productContainer');
+    const container = document.getElementById('product-container');
+    if(!container) return;
+    
     container.innerHTML = '';
 
     products.forEach(product => {
