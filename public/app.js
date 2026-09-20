@@ -35,26 +35,34 @@ function handleSearch(e) {
         product.name.toLowerCase().includes(keyword)
     );
 
-    renderProducts(filteredProducts);
+    if(Array.isArray(filteredProducts)) {
+        renderProducts(filteredProducts);
+    }
 }
 
 function renderProducts(products) {
-    const container = document.getElementById('product-container');
-    if(!container) return;
+    const container = document.getElementById('product-list');
+
+    if(!container) {
+        console.warn("Elemen #product-list belum dimuat di DOM.");
+        return;
+    }
+
+    if(!Array.isArray(products)) {
+        console.error("Data yang dikirim ke renderProducts bukan Array:", products);
+        return;
+    }
 
     container.innerHTML = '';
 
     products.forEach(product => {
         const imgUrl = product.image || 'https://via.placeholder.com/150';
-
         container.innerHTML += `
-            <div class="card mb-3" style="width: 18rem;">
+            <div class="card" style="width: 18rem; margin: 10px;">
                 <img src="${imgUrl}" class="card-img-top" alt="${product.name}">
                 <div class="card-body">
                     <h5 class="card-title">${product.name}</h5>
-                    <p class="card-text">Rp ${product.price.toLocaleString('id-ID')}</p>
-                    <p class="card-text">${product.description || ''}</p>
-                    <button class="btn btn-sm btn-success">Tambah ke Keranjang</button>
+                    <p class="card-text">Rp ${product.price}</p>
                 </div>
             </div>
         `;
