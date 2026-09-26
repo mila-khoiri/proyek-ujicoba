@@ -163,10 +163,10 @@ document.getElementById('addProductForm').addEventListener('submit', async (e) =
     const imageFile = document.getElementById('productImage').files[0];
 
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('price', price);
-    formData.append('description', description);
-    formData.append('image', imageFile);
+    formData.append('productName', name);
+    formData.append('productPrice', price);
+    formData.append('productDescription', description);
+    formData.append('ProductImage', imageFile);
 
     try {
         const response = await fetch('/api/products', {
@@ -324,11 +324,11 @@ document.getElementById('addProductForm').addEventListener('submit', async(e) =>
     const token = localStorage.getItem('adminToken');
 
     const newProduct = {
-        name: document.getElementById('name').value.trim(),
-        price: Number(document.getElementById('price').value),
-        stock: Number(document.getElementById('stock').value),
-        imageUrl: document.getElementById('imageUrl').value.trim(),
-        description: document.getElementById('description').value.trim(),
+        name: document.getElementById('productName').value.trim(),
+        price: Number(document.getElementById('productPrice').value),
+        stock: Number(document.getElementById('productStock').value),
+        imageUrl: document.getElementById('productImage').value.trim(),
+        description: document.getElementById('productDescription').value.trim(),
     };
 
     try {
