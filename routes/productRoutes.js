@@ -7,8 +7,9 @@ const verifyToken = require('../middleware/auth');
 router.get('/', async(req, res) => {
     try {
         const products = await Product.find({});
-        res.json(products);
+        res.status(200).json(products);
     } catch(error) {
+        console.error('Error pada GET /api/products:', error);
         res.status(500).json({message: error.message});
     }
 });
