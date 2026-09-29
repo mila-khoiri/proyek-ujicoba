@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const connectDB = require('../config/db');
 const mongoose = require('mongoose');
 const {upload} = require('../config/cloudinary');
 const Product = require('../models/Product');
@@ -7,10 +8,7 @@ const verifyToken = require('../middleware/auth');
 
 router.get('/', async(req, res) => {
     try {
-        if(mongoose.connection.readyState !== 1) {
-            await mongoose.connect(process.env.MONGO_URI);
-        }
-
+        await connectDB();
         const products = await Product.find({});
         res.json(products);
     } catch(error) {
