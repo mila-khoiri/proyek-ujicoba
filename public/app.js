@@ -84,6 +84,9 @@ document.getElementById('addProductForm').addEventListener('submit', async (e) =
     
     if(imageFile) {
         formData.append('image', imageFile);
+    } else {
+        alert('Silakan pilih foto terlebih dahulu!');
+        return;
     }
 
     const token = localStorage.getItem('adminToken');

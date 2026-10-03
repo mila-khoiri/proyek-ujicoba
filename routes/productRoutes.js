@@ -26,34 +26,23 @@ router.get('/:id', async(req, res) => {
     }
 });
 
-router.post('/', verifyToken, async(req, res) => {
-    try {
-        const {name, price, description, imageUrl} = req.body;
-        const product = new Product({name, price, description, imageUrl});
-        const createdProduct = await product.save();
-        res.status(201).json(createdProduct);
-    } catch (error) {
-        res.status(400).json({message: error.message});
-    }
-});
-
-router.post('/', upload.single('image'), async(req, res) => {
+router.post('/', verifyToken, upload.single('image'), async(req, res) => {
     try {
         const {name, price, description} = req.body;
-
         const imageUrl = req.file ? req.file.path : '';
 
         const newProduct = new Product({
             name,
             price,
             description,
-            image: imageUrl,
+            image: imageUrl
         });
 
-        await newProduct.save();
-        res.status(201).json(newProduct);
+        const savedProduct = await newProduct.save();
+        res.status(201).json(savedProduct);
     } catch(error) {
-        res.status(500).json({error: error.message});
+        console.error('Error POST product:', error);
+        res.status(500).json({message: error.message});
     }
 });
 
