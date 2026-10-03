@@ -69,22 +69,6 @@ function renderProducts(products) {
     });
 }
 
-function addToCart(id, name, price, stock) {
-    const existingItem = cart.find(item => item.product === id);
-
-    if(existingItem) {
-        if(existingItem.quantity >= stock) {
-            alert('Stok produk tidak mencukupi!');
-            return;
-        }
-        existingItem.quantity += 1;
-    } else {
-        cart.push({product: id, name, price, quantity: 1});
-    }
-
-    updateCartUI();
-}
-
 function updateCartUI() {
     const cartItems = document.getElementById('cartItems');
     const cartCount = document.getElementById('cartCount');
@@ -209,16 +193,12 @@ async function deleteProduct(id) {
     }
 }
 
-async function editProduct(id, currentName, currentPrice, currentStock) {
+async function editProduct(id, currentName, currentPrice) {
     const newPrice = prompt(`Edit harga untuk "${currentName}":`, currentPrice);
     if(newPrice === null) return;
 
-    const newStock = prompt(`Edit stok untuk "${currentName}":`, currentStock);
-    if(newStock === null) return;
-
     const updatedData = {
-        price: Number(newPrice),
-        stock: Number(newStock)
+        price: Number(newPrice)
     };
 
     try {
@@ -326,7 +306,6 @@ document.getElementById('addProductForm').addEventListener('submit', async(e) =>
     const newProduct = {
         name: document.getElementById('productName').value.trim(),
         price: Number(document.getElementById('productPrice').value),
-        stock: Number(document.getElementById('productStock').value),
         imageUrl: document.getElementById('productImage').value.trim(),
         description: document.getElementById('productDescription').value.trim(),
     };
@@ -380,19 +359,15 @@ async function deleteProduct(id) {
     }
 }
 
-async function editProduct(id, currentName, currentPrice, currentStock) {
+async function editProduct(id, currentName, currentPrice) {
     const token = localStorage.getItem('adminToken');
     if(!token) return alert('Silakan login terlebih dahulu!');
 
     const newPrice = prompt(`Edit harga untuk "${currentName}":`, currentPrice);
     if(newPrice === null) return;
 
-    const newStock = prompt(`Edit stok untuk "${currentName}":`, currentStock);
-    if(newStock === null) return;
-
     const updatedData = {
-        price: Number(newPrice),
-        stock: Number(newStock)
+        price: Number(newPrice)
     };
 
     try {
