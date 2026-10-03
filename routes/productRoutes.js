@@ -28,8 +28,8 @@ router.get('/:id', async(req, res) => {
 
 router.post('/', verifyToken, async(req, res) => {
     try {
-        const {name, price, description, stock, imageUrl} = req.body;
-        const product = new Product({name, price, description, stock, imageUrl});
+        const {name, price, description, imageUrl} = req.body;
+        const product = new Product({name, price, description, imageUrl});
         const createdProduct = await product.save();
         res.status(201).json(createdProduct);
     } catch (error) {

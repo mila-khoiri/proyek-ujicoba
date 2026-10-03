@@ -78,14 +78,22 @@ document.getElementById('addProductForm').addEventListener('submit', async (e) =
     const imageFile = document.getElementById('productImage').files[0];
 
     const formData = new FormData();
-    formData.append('productName', name);
-    formData.append('productPrice', price);
-    formData.append('productDescription', description);
-    formData.append('ProductImage', imageFile);
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('description', description);
+    
+    if(imageFile) {
+        formData.append('image', imageFile);
+    }
+
+    const token = localStorage.getItem('adminToken');
 
     try {
         const response = await fetch('/api/products', {
             method:'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             body: formData,
         });
 
@@ -100,7 +108,6 @@ document.getElementById('addProductForm').addEventListener('submit', async (e) =
         }
     } catch(error) {
         console.error('Error uploading product: ', error);
-        alert('Terjadi kesalahan koneksi.');
     }
 });
 
