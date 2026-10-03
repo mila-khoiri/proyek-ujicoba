@@ -72,10 +72,10 @@ function renderProducts(products) {
 document.getElementById('addProductForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const name = document.getElementById('productName').value;
-    const price = document.getElementById('productPrice').value;
-    const description = document.getElementById('productDescription').value;
-    const imageFile = document.getElementById('productImage').files[0];
+    const name = document.getElementById('name').value;
+    const price = document.getElementById('price').value;
+    const description = document.getElementById('description').value;
+    const imageFile = document.getElementById('image').files[0];
 
     const formData = new FormData();
     formData.append('name', name);
@@ -242,10 +242,10 @@ document.getElementById('addProductForm').addEventListener('submit', async(e) =>
     const token = localStorage.getItem('adminToken');
 
     const newProduct = {
-        name: document.getElementById('productName').value.trim(),
-        price: Number(document.getElementById('productPrice').value),
-        imageUrl: document.getElementById('productImage').value.trim(),
-        description: document.getElementById('productDescription').value.trim(),
+        name: document.getElementById('name').value.trim(),
+        price: Number(document.getElementById('price').value),
+        description: document.getElementById('description').value.trim(),
+        imageUrl: document.getElementById('image').value.trim(),
     };
 
     try {
