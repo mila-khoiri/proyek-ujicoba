@@ -56,10 +56,10 @@ function renderProducts(products) {
     container.innerHTML = '';
 
     products.forEach(product => {
-        const imageUrl = product.image || 'https://placehold.co/150';
+        const imgUrl = product.image || 'https://placehold.co/150';
         container.innerHTML += `
             <div class="card" style="width: 18rem; margin: 10px;">
-                <img src="${imageUrl}" class="card-img-top" alt="${product.name}">
+                <img src="${imgUrl}" class="card-img-top" alt="${product.name}">
                 <div class="card-body">
                     <h5 class="card-title">${product.name}</h5>
                     <p class="card-text">Rp ${product.price}</p>
