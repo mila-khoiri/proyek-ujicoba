@@ -69,6 +69,34 @@ function renderProducts(products) {
     });
 }
 
+async function loadProducts() {
+    try {
+        const response = await fetch('/api/products');
+        const products = await response.json();
+
+        const productListContainer = document.getElementById('product-list');
+        if(!productListContainer) return;
+
+        productListContainer.innerHTML = '';
+
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <img src="${product.imageUrl}" alt="${product.name}" style="width: 100%; max-width: 200px;"/>
+                <h3>${product.name}</h3>
+                <p>Rp ${product.price}</p>
+                <p>${product.description}</p>
+            `;
+            productListContainer.appendChild(card);
+        });
+    } catch(error) {
+        console.error('Error loading products:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadProducts);
+
 document.getElementById('addProductForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
