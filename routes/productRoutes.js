@@ -35,7 +35,7 @@ router.post('/', verifyToken, upload.single('image'), async(req, res) => {
             name,
             price,
             description,
-            image: imageUrl
+            imageUrl: imageUrl
         });
 
         const savedProduct = await newProduct.save();
