@@ -284,7 +284,6 @@ document.getElementById('addProductForm').addEventListener('submit', async(e) =>
         const res = await fetch('/api/products', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(newProduct)
