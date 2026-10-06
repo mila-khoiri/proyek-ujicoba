@@ -104,23 +104,22 @@ document.getElementById('addProductForm').addEventListener('submit', async (e) =
     const name = document.getElementById('name').value;
     const price = document.getElementById('price').value;
     const description = document.getElementById('description').value;
-    const imageFile = document.getElementById('image').files[0];
+    const imageFile = document.getElementById('image');
+
+    if(!imageFile.files[0]) {
+        alert('Silakan pilih foto terlebih dahulu!');
+        return;
+    }
 
     const formData = new FormData();
     formData.append('name', name);
     formData.append('price', price);
     formData.append('description', description);
-    
-    if(imageFile) {
-        formData.append('image', imageFile);
-    } else {
-        alert('Silakan pilih foto terlebih dahulu!');
-        return;
-    }
-
-    const token = localStorage.getItem('adminToken');
+    formData.append('image', imageFile.files[0]);
 
     try {
+        const token = localStorage.getItem('adminToken');
+
         const response = await fetch('/api/products', {
             method:'POST',
             headers: {
@@ -140,6 +139,7 @@ document.getElementById('addProductForm').addEventListener('submit', async (e) =
         }
     } catch(error) {
         console.error('Error uploading product: ', error);
+        alert('Terjadi kesalahan saat upload.');
     }
 });
 
