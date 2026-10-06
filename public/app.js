@@ -286,7 +286,7 @@ document.getElementById('addProductForm').addEventListener('submit', async(e) =>
             headers: {
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(newProduct)
+            body: formData
         });
 
         if(res.ok) {
