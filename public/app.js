@@ -135,6 +135,7 @@ document.getElementById('addProductForm').addEventListener('submit', async (e) =
             document.getElementById('addProductForm').reset();
             loadProducts();
         } else {
+            const errData = await response.json();
             alert('Gagal menambah produk: ' + (data.error || 'Terjadi kesalahan'));
         }
     } catch(error) {
@@ -267,39 +268,6 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
     localStorage.removeItem('adminToken');
     checkAuthStatus();
     alert('Berhasil logout!');
-});
-
-document.getElementById('addProductForm').addEventListener('submit', async(e) => {
-    e.preventDefault();
-    const token = localStorage.getItem('adminToken');
-
-    const newProduct = {
-        name: document.getElementById('name').value.trim(),
-        price: Number(document.getElementById('price').value),
-        description: document.getElementById('description').value.trim(),
-        imageUrl: document.getElementById('image').value.trim(),
-    };
-
-    try {
-        const res = await fetch('/api/products', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: formData
-        });
-
-        if(res.ok) {
-            alert('Produk berhasil ditambahkan!');
-            document.getElementById('addProductForm').reset();
-            fetchProducts();
-        } else {
-            const errData = await res.json();
-            alert(`Gagal: ${errData.message}`);
-        }
-    } catch(err) {
-        console.error('Error saat menambahkan produk:', err);
-    }
 });
 
 async function deleteProduct(id) {
