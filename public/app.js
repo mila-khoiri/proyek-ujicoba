@@ -11,20 +11,37 @@ document.addEventListener('DOMContentLoaded', () => {
 async function fetchProducts() {
     try {
         const res = await fetch('/api/products');
+        const products = await res.json();
 
-        if(!res.ok) {
-            throw new Error(`Server error: ${res.status}`);
-        }
+        const token = localStorage.getItem('adminToken');
+        const container = document.getElementsById('product-list');
+        container.innerHTML = '';
 
-        allProducts = await res.json();
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
 
-        if(Array.isArray(allProducts)) {
-            renderProducts(allProducts);
-        } else {
-            console.error('Data produk bukan array:', allProducts);
-        }
-    } catch(err) {
-        console.error('Gagal mengambil data produk: ', err);
+            let productHtml = `
+                <img src="${product.imageUrl}" alt="${product.name}">
+                <h3>${product.name}</h3>
+                <p>Rp ${product.price}</p>
+                <p>${product.description}</p>
+            `;
+
+            if(token) {
+                productHtml += `
+                    <div class="admin-actions">
+                        <button onclick="openEditModal('${product._id}', '${product.name}', ${product.price}, '${product.description}')">Edit</button>
+                        <button onclick="deleteProduct('${product._id}')" class="btn-delete">Hapus</button>
+                    </div>
+                `;
+            }
+
+            card.innerHTML = productHtml;
+            container.appendChild(card);
+        });
+    } catch(error) {
+        console.error('Error fetching products:', error);
     }
 }
 
@@ -144,53 +161,6 @@ document.getElementById('addProductForm').addEventListener('submit', async (e) =
     }
 });
 
-async function deleteProduct(id) {
-    if(!confirm('Apakah kamu yakin ingin menghapus produk ini?')) return;
-
-    try {
-        const res = await fetch(`/api/products/${id}`, {
-            method: 'DELETE'
-        });
-
-        if(res.ok) {
-            alert('Produk berhasil dihapus!');
-            fetchProducts();
-        } else {
-            const errData = await res.json();
-            alert(`Gagal menghapus: ${errData.message}`);
-        }
-    } catch(err) {
-        console.error('Error saat menghapus produk:', err);
-    }
-}
-
-async function editProduct(id, currentName, currentPrice) {
-    const newPrice = prompt(`Edit harga untuk "${currentName}":`, currentPrice);
-    if(newPrice === null) return;
-
-    const updatedData = {
-        price: Number(newPrice)
-    };
-
-    try {
-        const res = await fetch(`/api/products/${id}`, {
-            method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(updatedData)
-        });
-
-        if(res.ok) {
-            alert('Produk berhasil diperbarui!');
-            fetchProducts();
-        } else {
-            const errData = await res.json();
-            alert(`Gagal mengedit produk: ${errData.message}`);
-        }
-    } catch(err) {
-        console.error('Error saat mengedit produk:', err);
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     checkAuthStatus();
 });
@@ -271,10 +241,9 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
 });
 
 async function deleteProduct(id) {
-    const token = localStorage.getItem('adminToken');
-    if(!token) return alert('Silakan login terlebih dahulu!');
+    if(!confirm('Apakah kamu yakin ingin menghapus produk ini?')) return;
 
-    if(!confirm('Yakin ingin menghapus produk ini?')) return;
+    const token = localStorage.getItem('adminToken');
 
     try {
         const res = await fetch(`/api/products/${id}`, {
@@ -288,43 +257,44 @@ async function deleteProduct(id) {
             alert('Produk berhasil dihapus!');
             fetchProducts();
         } else {
-            const errData = await res.json();
-            alert(`Gagal: ${errData.message}`);
+            const err = await res.json();
+            alert(`Gagal menghapus: ${err.message}`);
         }
-    } catch(err) {
-        console.error('Error saat menghapus produk:', err);
+    } catch(error) {
+        console.error('Error deleting product:', error);
+        alert('Terjadi kesalahan saat menghapus produk.');
     }
 }
 
-async function editProduct(id, currentName, currentPrice) {
+async function editProduct(id, currentName, currentPrice, currentDescription) {
+    const newName = prompt('Nama baru:', currentName) || currentName;
+    const newPrice = prompt('Harga baru:', currentPrice) || currentPrice;
+    const newDescription = prompt('Deskripsi baru:', currentDescription) || currentDescription;
+
+    const formData = new FormData();
+    formData.append('name', newName);
+    formData.append('price', newPrice);
+    formData.append('description', newDescription);
+
     const token = localStorage.getItem('adminToken');
-    if(!token) return alert('Silakan login terlebih dahulu!');
-
-    const newPrice = prompt(`Edit harga untuk "${currentName}":`, currentPrice);
-    if(newPrice === null) return;
-
-    const updatedData = {
-        price: Number(newPrice)
-    };
 
     try {
         const res = await fetch(`/api/products/${id}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(updatedData)
+            body: formData
         });
 
         if(res.ok) {
             alert('Produk berhasil diperbarui!');
             fetchProducts();
         } else {
-            const errData = await res.json();
-            alert(`Gagal mengedit produk: ${errData.message}`);
+            const err = await res.json();
+            alert(`Gagal memperbarui: ${err.message}`);
         }
-    } catch(err) {
-        console.error('Error saat mengedit produk:', err);
+    } catch(error) {
+        console.error('Error updating product:', error);
     }
 }

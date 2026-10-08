@@ -49,23 +49,33 @@ router.post('/', verifyToken, upload.single('image'), async(req, res) => {
 router.delete('/:id', verifyToken, async (req, res) => {
     try {
         const deletedProduct = await Product.findByIdAndDelete(req.params.id);
-        if(!deletedProduct) return res.status(404).json({message: 'Produk tidak ditemukan'});
+        if(!deletedProduct) {
+            return res.status(404).json({message: 'Produk tidak ditemukan'});
+        }
         res.json({message: 'Produk berhasil dihapus'});
-    } catch(err) {
-        res.status(500).json({message: err.message});
+    } catch(error) {
+        res.status(500).json({message: error.message});
     }
 });
 
-router.put('/:id', verifyToken, async (req, res) => {
+router.put('/:id', verifyToken, upload.single('image'), async (req, res) => {
     try {
+        const {name, price, description} = req.body;
+        const updateData = {name, price, description};
+        
+        if(req.file) {
+            updateData.imageUrl = req.file.path;
+        }
+
         const updatedProduct = await Product.findByIdAndUpdate(
             req.params.id,
-            req.body,
-            {new: true, runValidators: true}
+            updateData,
+            {new: true}
         );
+
         res.json(updatedProduct);
-    } catch(err) {
-        res.status(400).json({message: err.message});
+    } catch(error) {
+        res.status(500).json({message: error.message});
     }
 });
 
