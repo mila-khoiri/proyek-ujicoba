@@ -14,7 +14,7 @@ async function fetchProducts() {
         const products = await res.json();
 
         const token = localStorage.getItem('adminToken');
-        const container = document.getElementsById('product-grid');
+        const container = document.getElementsById('product-list');
         container.innerHTML = '';
 
         products.forEach(product => {
