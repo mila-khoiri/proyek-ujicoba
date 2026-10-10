@@ -78,6 +78,40 @@
         </section>
     </main>
 
+    <div id="editModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Produk / Foto</h2>
+
+            <form id="editProductForm">
+                <input type="hidden" id="editProductId">
+
+                <div class="form-group">
+                    <label for="editName">Nama / Judul:</label>
+                    <input type="text" id="editName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editPrice">Harga:</label>
+                    <input type="number" id="editPrice" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editDescription">Deskripsi:</label>
+                    <textarea id="editDescription" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editImage">Ganti Foto (Opsional):</label>
+                    <input type="file" id="editImage" accept="image/*">
+                </div>
+
+                <button type="submit" class="btn-submit">Simpan Perubahan</button>
+                <button type="button" onclick="closeEditModal()" class="btn-cancel">Batal</button>
+            </form>
+        </div>
+    </div>
+
     <script src="app.js?v=2"></script>
 </body>
 </html>

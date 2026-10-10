@@ -298,3 +298,59 @@ async function editProduct(id, currentName, currentPrice, currentDescription) {
         console.error('Error updating product:', error);
     }
 }
+
+function openEditModal(id, name, price, description) {
+    document.getElementById('editProductId').value = id;
+    document.getElementById('editName').value = name;
+    document.getElementById('editPrice').value = price;
+    document.getElementById('editDescription').value = description;
+
+    document.getElementById('editModal').style.display = 'block';
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+    document.getElementById('editProductForm').reset();
+}
+
+document.getElementById('editProductForm').addEventListener('submit', async(e) => {
+    e.preventDefault();
+
+    const id = document.getElementById('editProductId').value;
+    const name = document.getElementById('editName').value;
+    const price = document.getElementById('editPrice').value;
+    const description = document.getElementById('editDescription').value;
+    const imageFile = document.getElementById('editImage').files[0];
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('description', description);
+
+    if(imageFile) {
+        formData.append('image', imageFile);
+    }
+
+    const token = localStorage.getItem('adminToken');
+
+    try {
+        const res = await fetch(`/api/products/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: formData
+        });
+
+        if(res.ok) {
+            alert('Produk berhasil diperbarui!');
+            closeEditModal();
+            fetchProducts();
+        } else {
+            const err = await res.json();
+            alert(`Gagal update: ${err.message || err.error}`);
+        }
+    } catch(error) {
+        console.error('Error updating product:', error);
+    }
+});
