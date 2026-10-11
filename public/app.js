@@ -12,8 +12,7 @@ async function fetchProducts() {
     try {
         const res = await fetch('/api/products');
         const products = await res.json();
-
-        const token = localStorage.getItem('adminToken');
+        
         const container = document.getElementById('product-list');
         container.innerHTML = '';
 
@@ -27,6 +26,8 @@ async function fetchProducts() {
                 <p>Rp ${product.price}</p>
                 <p>${product.description}</p>
             `;
+
+            const token = localStorage.getItem('adminToken');
 
             if(token) {
                 productHtml += `
