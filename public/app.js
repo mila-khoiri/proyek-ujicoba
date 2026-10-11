@@ -12,7 +12,7 @@ async function fetchProducts() {
     try {
         const res = await fetch('/api/products');
         const products = await res.json();
-        
+
         const container = document.getElementById('product-list');
         container.innerHTML = '';
 
@@ -71,20 +71,37 @@ function renderProducts(products) {
         return;
     }
 
+    const token = localStorage.getItem('adminToken');
+
     container.innerHTML = '';
 
     products.forEach(product => {
-        const imgUrl = product.image || 'https://placehold.co/150';
-        container.innerHTML += `
+        const imgUrl = product.imageUrl || product.image || 'https://placehold.co/150';
+
+        let cardHtml = `
             <div class="card" style="width: 18rem; margin: 10px;">
                 <img src="${imgUrl}" class="card-img-top" alt="${product.name}">
                 <div class="card-body">
                     <h5 class="card-title">${product.name}</h5>
                     <p class="card-text">Rp ${product.price}</p>
                     <p>${product.description}</p>
+        `;
+
+        if(token) {
+            cardHtml += `
+                <div class="admin-actions mt-2">
+                    <button class="btn btn-warning btn-sm me-1" onclick="openEditModal('${product._id}', '${product.name}', ${product.price}, '${product.description}')">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteProduct('${product._id}')">Hapus</button>
+                </div>
+            `;
+        }
+
+        cardHtml += `
                 </div>
             </div>
         `;
+
+        container.innerHTML += cardHtml;
     });
 }
 
