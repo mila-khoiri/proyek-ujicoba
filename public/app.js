@@ -58,53 +58,6 @@ function handleSearch(e) {
     }
 }
 
-function renderProducts(products) {
-    const container = document.getElementById('product-list');
-
-    if(!container) {
-        console.warn("Elemen #product-list belum dimuat di DOM.");
-        return;
-    }
-
-    if(!Array.isArray(products)) {
-        console.error("Data yang dikirim ke renderProducts bukan Array:", products);
-        return;
-    }
-
-    const token = localStorage.getItem('adminToken');
-
-    container.innerHTML = '';
-
-    products.forEach(product => {
-        const imgUrl = product.imageUrl || product.image || 'https://placehold.co/150';
-
-        let cardHtml = `
-            <div class="card" style="width: 18rem; margin: 10px;">
-                <img src="${imgUrl}" class="card-img-top" alt="${product.name}">
-                <div class="card-body">
-                    <h5 class="card-title">${product.name}</h5>
-                    <p class="card-text">Rp ${product.price}</p>
-                    <p>${product.description}</p>
-        `;
-
-        if(token) {
-            cardHtml += `
-                <div class="admin-actions mt-2">
-                    <button class="btn btn-warning btn-sm me-1" onclick="openEditModal('${product._id}', '${product.name}', ${product.price}, '${product.description}')">Edit</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteProduct('${product._id}')">Hapus</button>
-                </div>
-            `;
-        }
-
-        cardHtml += `
-                </div>
-            </div>
-        `;
-
-        container.innerHTML += cardHtml;
-    });
-}
-
 async function loadProducts() {
     try {
         const response = await fetch('/api/products');
@@ -113,17 +66,30 @@ async function loadProducts() {
         const productListContainer = document.getElementById('product-list');
         if(!productListContainer) return;
 
+        const token = localStorage.getItem('adminToken');
+
         productListContainer.innerHTML = '';
 
         products.forEach(product => {
             const card = document.createElement('div');
             card.className = 'product-card';
-            card.innerHTML = `
+
+            let productHtml = `
                 <img src="${product.imageUrl}" alt="${product.name}" style="width: 100%; max-width: 200px;"/>
                 <h3>${product.name}</h3>
                 <p>Rp ${product.price}</p>
                 <p>${product.description}</p>
             `;
+            if(token) {
+                productHtml += `
+                    <div class="admin-actions" style="margin-top: 10px;">
+                        <button onclick="openEditModal('${product._id}', '${product.name}', ${product.price}, '${product.description}')" style="margin-right: 5px;">Edit</button>
+                        <button onclick="deleteProduct('${product._id}')" class="btn-delete" style="background-color: red; color: white;">Hapus</button>
+                    </div>
+                `;
+            }
+
+            card.innerHTML = productHtml;
             productListContainer.appendChild(card);
         });
     } catch(error) {
