@@ -222,6 +222,7 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
     localStorage.removeItem('adminToken');
     checkAuthStatus();
     alert('Berhasil logout!');
+    loadProducts();
 });
 
 async function deleteProduct(id) {
