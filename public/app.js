@@ -185,6 +185,7 @@ document.getElementById('loginForm').addEventListener('submit', async(e) => {
             alert('Login berhasil!');
 
             checkAuthStatus();
+            loadProducts();
         } else {
             alert(data.message || 'Login gagal');
         }
