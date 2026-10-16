@@ -59,16 +59,22 @@ function handleSearch(e) {
 }
 
 async function loadProducts() {
+    const productListContainer = document.getElementById('product-list');
+    if(!productListContainer) return;
+
+    productListContainer.innerHTML = '<p style="text-align: center; color: #777;">Sedang memuat produk...</p>';
+
     try {
         const response = await fetch('/api/products');
         const products = await response.json();
 
-        const productListContainer = document.getElementById('product-list');
-        if(!productListContainer) return;
-
         const token = localStorage.getItem('adminToken');
-
         productListContainer.innerHTML = '';
+
+        if(products.length === 0) {
+            productListContainer.innerHTML = '<p style="text-align: center;">Belum ada produk.</p>';
+            return;
+        }
 
         products.forEach(product => {
             const card = document.createElement('div');
@@ -80,7 +86,8 @@ async function loadProducts() {
                 <p>Rp ${product.price}</p>
                 <p>${product.description}</p>
             `;
-            if(token) {
+
+            if(token && token !== "undefined" && token.trim() !== "") {
                 productHtml += `
                     <div class="admin-actions" style="margin-top: 10px;">
                         <button onclick="openEditModal('${product._id}', '${product.name}', ${product.price}, '${product.description}')" style="margin-right: 5px;">Edit</button>
@@ -94,6 +101,7 @@ async function loadProducts() {
         });
     } catch(error) {
         console.error('Error loading products:', error);
+        productListContainer.innerHTML = '<p style="text-align: center; color: red;">Gagal memuat produk. Silakan coba lagi.</p>';
     }
 }
 
