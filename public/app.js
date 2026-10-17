@@ -107,51 +107,70 @@ async function loadProducts() {
 
 document.addEventListener('DOMContentLoaded', loadProducts);
 
-document.getElementById('addProductForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+const addProductForm = document.getElementById('addProductForm');
 
-    const name = document.getElementById('name').value;
-    const price = document.getElementById('price').value;
-    const description = document.getElementById('description').value;
-    const imageFile = document.getElementById('image');
+if(addProductForm) {
+    addProductForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    if(!imageFile.files[0]) {
-        alert('Silakan pilih foto terlebih dahulu!');
-        return;
-    }
+        const submitBtn = addProductForm.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn ? submitBtn.innerText : 'Tambah Produk';
 
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('price', price);
-    formData.append('description', description);
-    formData.append('image', imageFile.files[0]);
-
-    try {
-        const token = localStorage.getItem('adminToken');
-
-        const response = await fetch('/api/products', {
-            method:'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: formData,
-        });
-
-        const data = await response.json();
-
-        if(response.ok) {
-            alert('Produk berhasil ditambahkan!');
-            document.getElementById('addProductForm').reset();
-            loadProducts();
-        } else {
-            const errData = await response.json();
-            alert('Gagal menambah produk: ' + (data.error || 'Terjadi kesalahan'));
+        if(submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Sedang mengunggah...';
         }
-    } catch(error) {
-        console.error('Error uploading product: ', error);
-        alert('Terjadi kesalahan saat upload.');
-    }
-});
+
+        const name = document.getElementById('name').value;
+        const price = document.getElementById('price').value;
+        const description = document.getElementById('description').value;
+        const imageFile = document.getElementById('image');
+
+        if(!imageFile.files[0]) {
+            alert('Silakan pilih foto terlebih dahulu!');
+            if(submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('price', price);
+        formData.append('description', description);
+        formData.append('image', imageFile.files[0]);
+
+        try {
+            const token = localStorage.getItem('adminToken');
+
+            const response = await fetch('/api/products', {
+                method:'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+
+            if(response.ok) {
+                alert('Produk berhasil ditambahkan!');
+                addProductForm.reset();
+                loadProducts();
+            } else {
+                const errData = await response.json();
+                alert(`Gagal: ${errData.message || errData.error}`);
+            }
+        } catch(error) {
+            console.error('Error uploading product: ', error);
+            alert('Terjadi kesalahan saat upload.');
+        } finally {
+            if(submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText; 
+            }
+        }
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     checkAuthStatus();
