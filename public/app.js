@@ -325,6 +325,12 @@ function openEditModal(id, name, price, description) {
     document.getElementById('editPrice').value = price;
     document.getElementById('editDescription').value = description;
 
+    const editImagePreview = document.getElementById('editImagePreview');
+    if(editImagePreview && imageUrl) {
+        editImagePreview.src = imageUrl;
+        editImagePreview.style.display = 'block';
+    }
+
     document.getElementById('editModal').style.display = 'block';
 }
 
@@ -349,7 +355,6 @@ document.getElementById('editProductForm').addEventListener('submit', async(e) =
 
     if(imageFile) {
         formData.append('image', imageFile);
-        imageFile.reset();
     }
 
     const token = localStorage.getItem('adminToken');
@@ -406,10 +411,11 @@ if(imageInput && imagePreview) {
     });
 }
 
+const editImageInput = document.getElementById('editImage');
 const editImagePreview = document.getElementById('editImagePreview');
 
-if(imageInput && editImagePreview) {
-    imageInput.addEventListener('change', function(event) {
+if(editImageInput && editImagePreview) {
+    editImageInput.addEventListener('change', function(event) {
         const file = event.target.files[0];
 
         if(file) {
