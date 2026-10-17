@@ -40,7 +40,11 @@
 
         <div class="mb-3">
             <label for="image" class="form-label">Gambar Produk</label>
-            <input type="file" id="image" name="image" accept="image/*" class="form-control" required>
+            <input type="file" id="image" accept="image/*" class="form-control" required>
+
+            <div style="margin-top: 10px;">
+                <img id="imagePreview" src="" alt="Preview Gambar" style="display: none; max-width: 150px; max-height: 150px; border-radius: 4px; object-fit: cover;" />
+            </div>
         </div>
 
         <button type="submit" class="btn btn-primary">Tambah Produk</button>
@@ -104,6 +108,10 @@
                 <div class="form-group">
                     <label for="editImage">Ganti Foto (Opsional):</label>
                     <input type="file" id="editImage" accept="image/*">
+
+                    <div style="margin-top: 10px;">
+                        <img id="editImagePreview" src="" alt="Preview Gambar" style="display: none; max-width: 150px; max-height: 150px; border-radius: 4px; object-fit: cover;" />
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-submit">Simpan Perubahan</button>

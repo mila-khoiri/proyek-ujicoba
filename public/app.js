@@ -367,3 +367,48 @@ document.getElementById('editProductForm').addEventListener('submit', async(e) =
         console.error('Error updating product:', error);
     }
 });
+
+const imageInput = document.getElementById('image');
+const imagePreview = document.getElementById('imagePreview');
+
+if(imageInput && imagePreview) {
+    imageInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+
+        if(file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            }
+
+            reader.readAsDataURL(file);
+        } else {
+            imagePreview.src = '';
+            imagePreview.style.display = 'none';
+        }
+    });
+}
+
+const editImagePreview = document.getElementById('editImagePreview');
+
+if(imageInput && editImagePreview) {
+    imageInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+
+        if(file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                editImagePreview.src = e.target.result;
+                editImagePreview.style.display = 'block';
+            }
+
+            reader.readAsDataURL(file);
+        } else {
+            editImagePreview.src = '';
+            editImagePreview.style.display = 'none';
+        }
+    });
+}
