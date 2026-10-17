@@ -349,6 +349,7 @@ document.getElementById('editProductForm').addEventListener('submit', async(e) =
 
     if(imageFile) {
         formData.append('image', imageFile);
+        imageFile.reset();
     }
 
     const token = localStorage.getItem('adminToken');
