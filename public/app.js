@@ -155,6 +155,13 @@ if(addProductForm) {
             if(response.ok) {
                 alert('Produk berhasil ditambahkan!');
                 addProductForm.reset();
+
+                const imagePreview = document.getElementById('imagePreview');
+                if(imagePreview) {
+                    imagePreview.src = '';
+                    imagePreview.style.display = 'none';
+                }
+
                 loadProducts();
             } else {
                 const errData = await response.json();
@@ -358,6 +365,13 @@ document.getElementById('editProductForm').addEventListener('submit', async(e) =
         if(res.ok) {
             alert('Produk berhasil diperbarui!');
             closeEditModal();
+
+            const editImagePreview = document.getElementById('imagePreview');
+            if(editImagePreview) {
+                editImagePreview.src = '';
+                editImagePreview.style.display = 'none';
+            }
+
             fetchProducts();
         } else {
             const err = await res.json();
