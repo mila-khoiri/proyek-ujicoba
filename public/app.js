@@ -57,7 +57,6 @@ function handleSearch(e) {
 
 document.getElementById('searchBtn').addEventListener('click', () => {
     handleSearch();
-    loadProducts();
 });
 
 function renderProductsCards(productsToRender) {
