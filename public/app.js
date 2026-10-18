@@ -1,12 +1,4 @@
-let cart = [];
 let allProducts = [];
-
-document.addEventListener('DOMContentLoaded', () => {
-    fetchProducts();
-
-    const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('input', handleSearch);
-});
 
 async function fetchProducts() {
     try {
@@ -47,40 +39,38 @@ async function fetchProducts() {
 }
 
 function handleSearch(e) {
-    const keyword = e.target.value.toLowerCase().trim();
+    const searchInput = document.getElementById('searchInput');
 
-    const filteredProducts = allProducts.filter(product =>
-        product.name.toLowerCase().includes(keyword)
-    );
+    if(searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const keyword = e.target.value.toLowerCase().trim();
 
-    if(Array.isArray(filteredProducts)) {
-        renderProducts(filteredProducts);
+            const filteredProducts = allProducts.filter(product =>
+                product.name.toLowerCase().includes(keyword) ||
+                product.description.toLowerCase().includes(keyword)
+            );
+
+            renderProductsCards(filteredProducts);
+        });
     }
 }
 
-async function loadProducts() {
+function renderProductsCards(productsToRender) {
     const productListContainer = document.getElementById('product-list');
-    if(!productListContainer) return;
+    productListContainer.innerHTML = '';
 
-    productListContainer.innerHTML = '<p style="text-align: center; color: #777;">Sedang memuat produk...</p>';
+    const token = localStorage.getItem('adminToken');
 
-    try {
-        const response = await fetch('/api/products');
-        const products = await response.json();
+    if(productsToRender.length === 0) {
+        productListContainer.innerHTML = '<p style="text-align: center;">Produk tidak ditemukan.</p>';
+        return;
+    }
 
-        const token = localStorage.getItem('adminToken');
-        productListContainer.innerHTML = '';
+    productsToRender.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
 
-        if(products.length === 0) {
-            productListContainer.innerHTML = '<p style="text-align: center;">Belum ada produk.</p>';
-            return;
-        }
-
-        products.forEach(product => {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-
-            let productHtml = `
+        let productHtml = `
                 <img src="${product.imageUrl}" alt="${product.name}" style="width: 100%; max-width: 200px;"/>
                 <h3>${product.name}</h3>
                 <p>Rp ${product.price}</p>
@@ -98,7 +88,23 @@ async function loadProducts() {
 
             card.innerHTML = productHtml;
             productListContainer.appendChild(card);
-        });
+    });
+}
+
+async function loadProducts() {
+    const productListContainer = document.getElementById('product-list');
+    if(!productListContainer) return;
+
+    productListContainer.innerHTML = '<p style="text-align: center; color: #777;">Sedang memuat produk...</p>';
+
+    try {
+        const response = await fetch('/api/products');
+        const products = await response.json();
+
+        allProducts = products;
+
+        renderProductsCards(allProducts);
+
     } catch(error) {
         console.error('Error loading products:', error);
         productListContainer.innerHTML = '<p style="text-align: center; color: red;">Gagal memuat produk. Silakan coba lagi.</p>';
