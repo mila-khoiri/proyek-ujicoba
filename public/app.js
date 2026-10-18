@@ -90,7 +90,7 @@ async function loadProducts() {
             if(token && token !== "undefined" && token.trim() !== "") {
                 productHtml += `
                     <div class="admin-actions" style="margin-top: 10px;">
-                        <button onclick="openEditModal('${product._id}', '${product.name}', ${product.price}, '${product.description}')" style="margin-right: 5px;">Edit</button>
+                        <button onclick="openEditModal('${product._id}', '${product.name}', ${product.price}, '${product.description}', '${product.imageUrl}')" style="margin-right: 5px;">Edit</button>
                         <button onclick="deleteProduct('${product._id}')" class="btn-delete" style="background-color: red; color: white;">Hapus</button>
                     </div>
                 `;
@@ -319,15 +319,15 @@ async function editProduct(id, currentName, currentPrice, currentDescription) {
     }
 }
 
-function openEditModal(id, name, price, description) {
+function openEditModal(id, name, price, description, imageUrl) {
     document.getElementById('editProductId').value = id;
     document.getElementById('editName').value = name;
     document.getElementById('editPrice').value = price;
     document.getElementById('editDescription').value = description;
 
     const editImagePreview = document.getElementById('editImagePreview');
-    if(editImagePreview && editImageInput) {
-        editImagePreview.src = editImageInput;
+    if(editImagePreview && imageUrl) {
+        editImagePreview.src = imageUrl;
         editImagePreview.style.display = 'block';
     }
 
