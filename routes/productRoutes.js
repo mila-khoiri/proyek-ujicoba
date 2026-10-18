@@ -62,7 +62,6 @@ router.put('/:id', verifyToken, upload.single('image'), async (req, res) => {
     try {
         const {name, price, description} = req.body;
         const updateData = {name, price, description};
-        const imageUrl = req.file ? req.file.path : '';
         
         if(req.file) {
             updateData.imageUrl = req.file.path;
