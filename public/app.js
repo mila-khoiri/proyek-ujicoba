@@ -326,8 +326,8 @@ function openEditModal(id, name, price, description) {
     document.getElementById('editDescription').value = description;
 
     const editImagePreview = document.getElementById('editImagePreview');
-    if(editImagePreview && product.imageUrl) {
-        editImagePreview.src = product.imageUrl;
+    if(editImagePreview && editImage) {
+        editImagePreview.src = editImage;
         editImagePreview.style.display = 'block';
     }
 
