@@ -55,10 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-document.getElementById('searchBtn').addEventListener('click', () => {
-    handleSearch();
-});
-
 function renderProductsCards(productsToRender) {
     const productListContainer = document.getElementById('product-list');
     productListContainer.innerHTML = '';
