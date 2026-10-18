@@ -38,7 +38,7 @@ async function fetchProducts() {
     }
 }
 
-function handleSearch(e) {
+document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
 
     if(searchInput) {
@@ -53,7 +53,7 @@ function handleSearch(e) {
             renderProductsCards(filteredProducts);
         });
     }
-}
+});
 
 document.getElementById('searchBtn').addEventListener('click', () => {
     handleSearch();
