@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 let currentPage = 1;
-const itemsPerPage = 10;
+const itemsPerPage = 4;
 
 function renderProductsCards(productsToRender) {
     const productListContainer = document.getElementById('product-list');
