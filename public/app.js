@@ -103,7 +103,7 @@ function renderProductsCards(productsToRender) {
     renderPaginationButtons(productsToRender.length);
 }
 
-function renderPaginationButton(totalItems) {
+function renderPaginationButtons(totalItems) {
     const paginationContainer = document.getElementById('pagination-container');
     if(!paginationContainer) return;
 
