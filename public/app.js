@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.addEventListener('input', (e) => {
             const keyword = e.target.value.toLowerCase().trim();
 
+            currentPage = 1;
+
             const filteredProducts = allProducts.filter(product =>
                 product.name.toLowerCase().includes(keyword) ||
                 product.description.toLowerCase().includes(keyword)
@@ -55,6 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+let currentPage = 1;
+const itemsPerPage = 10;
+
 function renderProductsCards(productsToRender) {
     const productListContainer = document.getElementById('product-list');
     productListContainer.innerHTML = '';
@@ -62,11 +67,16 @@ function renderProductsCards(productsToRender) {
     const token = localStorage.getItem('adminToken');
 
     if(productsToRender.length === 0) {
-        productListContainer.innerHTML = '<p style="text-align: center;">Produk tidak ditemukan.</p>';
+        productListContainer.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">Produk tidak ditemukan.</p>';
+        document.getElementById('pagination-container').innerHTML = '';
         return;
     }
 
-    productsToRender.forEach(product => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedProducts = productsToRender.slice(startIndex, endIndex);
+
+    paginatedProducts.forEach(product => {
         const card = document.createElement('div');
         card.className = 'product-card';
 
@@ -89,6 +99,50 @@ function renderProductsCards(productsToRender) {
             card.innerHTML = productHtml;
             productListContainer.appendChild(card);
     });
+
+    renderPaginationButtons(productsToRender.length);
+}
+
+function renderPaginationButton(totalItems) {
+    const paginationContainer = document.getElementById('pagination-container');
+    if(!paginationContainer) return;
+
+    paginationContainer.innerHTML = '';
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    if(totalPages <= 1) return;
+
+    for(let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.innerText = i;
+        btn.style.padding = '6px 12px';
+        btn.style.cursor = 'pointer';
+        btn.style.borderRadius = '4px';
+        btn.style.border = '1px solid #ddd';
+
+        if(i === currentPage) {
+            btn.style.backgroundColor = '#118c00';
+            btn.style.color = '#white';
+            btn.style.borderColor = '#118c00';
+        } else {
+            btn.style.backgroundColor = '#555';
+            btn.style.color = '#777';
+        }
+
+        btn.addEventListener('click', () => {
+            currentPage = 1;
+            const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+            const filtered = allProducts.filter(p => 
+                p.name.toLowerCase().includes(keyword) ||
+                p.description.toLowerCase().includes(keyword)
+            );
+            renderProductsCards(filtered);
+
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        paginationContainer.appendChild(btn);
+    }
 }
 
 async function loadProducts() {
