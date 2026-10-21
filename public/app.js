@@ -1,62 +1,4 @@
 let allProducts = [];
-
-async function fetchProducts() {
-    try {
-        const res = await fetch('/api/products');
-        const products = await res.json();
-
-        const container = document.getElementById('product-list');
-        container.innerHTML = '';
-
-        products.forEach(product => {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-
-            let productHtml = `
-                <img src="${product.imageUrl}" alt="${product.name}">
-                <h3>${product.name}</h3>
-                <p>Rp ${product.price}</p>
-                <p>${product.description}</p>
-            `;
-
-            const token = localStorage.getItem('adminToken');
-
-            if(token) {
-                productHtml += `
-                    <div class="admin-actions">
-                        <button onclick="openEditModal('${product._id}', '${product.name}', ${product.price}, '${product.description}')">Edit</button>
-                        <button onclick="deleteProduct('${product._id}')" class="btn-delete">Hapus</button>
-                    </div>
-                `;
-            }
-
-            card.innerHTML = productHtml;
-            container.appendChild(card);
-        });
-    } catch(error) {
-        console.error('Error fetching products:', error);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('searchInput');
-
-    if(searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const keyword = e.target.value.toLowerCase().trim();
-
-            currentPage = 1;
-
-            const filteredProducts = allProducts.filter(product =>
-                product.name.toLowerCase().includes(keyword) ||
-                product.description.toLowerCase().includes(keyword)
-            );
-
-            renderProductsCards(filteredProducts);
-        });
-    }
-});
-
 let currentPage = 1;
 const itemsPerPage = 4;
 
@@ -169,10 +111,27 @@ async function loadProducts() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', loadProducts);
+document.addEventListener('DOMContentLoaded', () => {
+    loadProducts();
+
+    const searchInput = document.getElementById('searchInput');
+    if(searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const keyword = e.target.value.toLowerCase().trim();
+
+            currentPage = 1;
+
+            const filteredProducts = allProducts.filter(product =>
+                product.name.toLowerCase().includes(keyword) ||
+                product.description.toLowerCase().includes(keyword)
+            );
+
+            renderProductsCards(filteredProducts);
+        });
+    }
+});
 
 const addProductForm = document.getElementById('addProductForm');
-
 if(addProductForm) {
     addProductForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -339,7 +298,7 @@ async function deleteProduct(id) {
 
         if(res.ok) {
             alert('Produk berhasil dihapus!');
-            fetchProducts();
+            loadProducts();
         } else {
             const err = await res.json();
             alert(`Gagal menghapus: ${err.message}`);
@@ -373,7 +332,7 @@ async function editProduct(id, currentName, currentPrice, currentDescription) {
 
         if(res.ok) {
             alert('Produk berhasil diperbarui!');
-            fetchProducts();
+            loadProducts();
         } else {
             const err = await res.json();
             alert(`Gagal memperbarui: ${err.message}`);
@@ -442,7 +401,7 @@ document.getElementById('editProductForm').addEventListener('submit', async(e) =
                 editImagePreview.style.display = 'none';
             }
 
-            fetchProducts();
+            loadProducts();
         } else {
             const err = await res.json();
             alert(`Gagal update: ${err.message || err.error}`);
