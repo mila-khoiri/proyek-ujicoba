@@ -105,10 +105,14 @@ function renderProductsCards(productsToRender) {
 
 function renderPaginationButtons(totalItems) {
     const paginationContainer = document.getElementById('pagination-container');
-    if(!paginationContainer) return;
+    if(!paginationContainer) {
+        console.log("Elemen pagination-container tidak ditemukan di HTML!");
+        return;
+    }
 
     paginationContainer.innerHTML = '';
     const totalPages = Math.ceil(totalItems / itemsPerPage);
+    console.log("Total item:", totalItems, "| Total halaman:", totalPages);
 
     if(totalPages <= 1) return;
 
