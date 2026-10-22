@@ -80,7 +80,6 @@ function renderPaginationButtons(totalItems) {
             currentPage = 1;
 
             const searchInputElem = document.getElementById('searchInput');
-            
             const keyword = searchInputElem ? searchInputElem.value.toLowerCase().trim() : '';
 
             const filtered = allProducts.filter(p => 
