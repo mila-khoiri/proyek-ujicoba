@@ -76,14 +76,18 @@ function renderPaginationButtons(totalItems) {
         }
 
         btn.addEventListener('click', () => {
+            console.log("Tombol halaman diklik, pindah ke halaman:", i);
             currentPage = 1;
-            const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            const searchInputElem = document.getElementById('searchInput');
+            const keyword = searchInputElem ? searchInputElem.value.toLowerCase().trim() : '';
+
             const filtered = allProducts.filter(p => 
                 p.name.toLowerCase().includes(keyword) ||
                 p.description.toLowerCase().includes(keyword)
             );
-            renderProductsCards(filtered);
 
+            renderProductsCards(filtered);
             window.scrollTo({top: 0, behavior: 'smooth'});
         });
 
