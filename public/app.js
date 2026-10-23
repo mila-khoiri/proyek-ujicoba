@@ -2,7 +2,7 @@ let allProducts = [];
 let currentPage = 1;
 const itemsPerPage = 4;
 
-function renderProductsCards(productsToRender) {
+function renderProductCards(productsToRender) {
     const productListContainer = document.getElementById('product-list');
     if(!productListContainer) return;
     productListContainer.innerHTML = '';
@@ -89,7 +89,7 @@ function renderPaginationButtons(totalItems) {
                 p.description.toLowerCase().includes(keyword)
             );
 
-            renderProductsCards(filtered);
+            renderProductCards(filtered);
             window.scrollTo({top: 0, behavior: 'smooth'});
         });
 
@@ -109,7 +109,7 @@ async function loadProducts() {
 
         allProducts = products;
 
-        renderProductsCards(allProducts);
+        renderProductCards(allProducts);
 
     } catch(error) {
         console.error('Error loading products:', error);
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 product.description.toLowerCase().includes(keyword)
             );
 
-            renderProductsCards(filteredProducts);
+            renderProductCards(filteredProducts);
         });
     }
 });
