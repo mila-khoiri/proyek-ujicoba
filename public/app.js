@@ -10,7 +10,8 @@ function renderProductsCards(productsToRender) {
 
     if(productsToRender.length === 0) {
         productListContainer.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">Produk tidak ditemukan.</p>';
-        document.getElementById('pagination-container').innerHTML = '';
+        const paginationContainer = document.getElementById('pagination-container');
+        if(paginationContainer) paginationContainer.innerHTML = '';
         return;
     }
 
@@ -23,23 +24,23 @@ function renderProductsCards(productsToRender) {
         card.className = 'product-card';
 
         let productHtml = `
-                <img src="${product.imageUrl}" alt="${product.name}" style="width: 100%; max-width: 200px;"/>
-                <h3>${product.name}</h3>
-                <p>Rp ${product.price}</p>
-                <p>${product.description}</p>
+            <img src="${product.imageUrl}" alt="${product.name}" style="width: 100%; max-width: 200px;"/>
+            <h3>${product.name}</h3>
+            <p>Rp ${product.price}</p>
+            <p>${product.description}</p>
+        `;
+
+        if(token && token !== "undefined" && token.trim() !== "") {
+            productHtml += `
+                <div class="admin-actions" style="margin-top: 10px;">
+                    <button onclick="openEditModal('${product._id}', '${product.name}', ${product.price}, '${product.description}', '${product.imageUrl}')" style="margin-right: 5px;">Edit</button>
+                    <button onclick="deleteProduct('${product._id}')" class="btn-delete" style="background-color: red; color: white;">Hapus</button>
+                </div>
             `;
+        }
 
-            if(token && token !== "undefined" && token.trim() !== "") {
-                productHtml += `
-                    <div class="admin-actions" style="margin-top: 10px;">
-                        <button onclick="openEditModal('${product._id}', '${product.name}', ${product.price}, '${product.description}', '${product.imageUrl}')" style="margin-right: 5px;">Edit</button>
-                        <button onclick="deleteProduct('${product._id}')" class="btn-delete" style="background-color: red; color: white;">Hapus</button>
-                    </div>
-                `;
-            }
-
-            card.innerHTML = productHtml;
-            productListContainer.appendChild(card);
+        card.innerHTML = productHtml;
+        productListContainer.appendChild(card);
     });
 
     renderPaginationButtons(productsToRender.length);
