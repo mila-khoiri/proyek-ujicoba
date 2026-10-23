@@ -4,6 +4,7 @@ const itemsPerPage = 4;
 
 function renderProductsCards(productsToRender) {
     const productListContainer = document.getElementById('product-list');
+    if(!productListContainer) return;
     productListContainer.innerHTML = '';
 
     const token = localStorage.getItem('adminToken');
