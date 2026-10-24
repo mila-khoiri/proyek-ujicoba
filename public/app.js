@@ -78,8 +78,7 @@ function renderPaginationButtons(totalItems) {
         }
 
         btn.addEventListener('click', () => {
-            console.log("Tombol halaman diklik, pindah ke halaman:", i);
-            currentPage = 1;
+            currentPage = i;
 
             const searchInputElem = document.getElementById('searchInput');
             const keyword = searchInputElem ? searchInputElem.value.toLowerCase().trim() : '';
