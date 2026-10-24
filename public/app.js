@@ -461,3 +461,24 @@ if(editImageInput && editImagePreview) {
         }
     });
 }
+
+if(imageInput) {
+    imageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if(!file) return;
+
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+        if(!allowedTypes.includes(file.type)) {
+            alert('Format file tidak didukung! Harap unggah gambar berformat JPG, PNG, atau WEBP.');
+            imageInput.value = '';
+            return;
+        }
+
+        const maxSize = 2 * 1024 * 1024;
+        if(file.size > maxSize) {
+            alert('Ukuran file terlalu besar! Maksimal ukuran gambar adalah 2MB.');
+            imageInput.value = '';
+            return;
+        }
+    });
+}
