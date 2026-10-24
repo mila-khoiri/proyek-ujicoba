@@ -54,4 +54,24 @@ if(process.env.NODE_ENV !== 'production') {
     app.listen(PORT, () => console.log(`Server running on ${PORT}`));
 }
 
+const multer = require('multer');
+
+const storage = multer.diskStorage({});
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 2 * 1024 * 1024
+    },
+    fileFilter: (req, res, cb) => {
+        const allowedTypes = /jpeg|jpg|png|webp/;
+        const mimetypes = allowedTypes.test(file.mimetype);
+
+        if(mimetypes) {
+            return cb(null, true);
+        } else {
+            cb(new Error('Hanya file gambar (JPG, PNG, WEBP) yang diizinkan!'));
+        }
+    }
+});
 module.exports = app;

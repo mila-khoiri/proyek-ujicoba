@@ -5,26 +5,7 @@ const mongoose = require('mongoose');
 const {upload} = require('../config/cloudinary');
 const Product = require('../models/Product');
 const verifyToken = require('../middleware/auth');
-const multer = require('multer');
 
-const storage = multer.diskStorage({});
-
-const upload = multer({
-    storage: storage,
-    limits: {
-        fileSize: 2 * 1024 * 1024
-    },
-    fileFilter: (req, res, cb) => {
-        const allowedTypes = /jpeg|jpg|png|webp/;
-        const mimetypes = allowedTypes.test(file.mimetype);
-
-        if(mimetypes) {
-            return cb(null, true);
-        } else {
-            cb(new Error('Hanya file gambar (JPG, PNG, WEBP) yang diizinkan!'));
-        }
-    }
-});
 
 router.get('/', async(req, res) => {
     try {
