@@ -482,3 +482,26 @@ if(imageInput) {
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const lockIcon = document.getElementById('lock-icon');
+    const loginContainer = document.getElementById('loginForm');
+
+    if(lockIcon && loginContainer) {
+        lockIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            if(loginContainer.style.display === 'none' || loginContainer.style.display === '') {
+                loginContainer.style.display = 'block';
+            } else {
+                loginContainer.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if(!loginContainer.contains(e.target) && e.target !== lockIcon) {
+                loginContainer.style.display = 'none';
+            }
+        });
+    }
+});
