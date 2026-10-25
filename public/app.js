@@ -487,6 +487,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const lockIcon = document.getElementById('lock-icon');
     const loginContainer = document.getElementById('loginFormContainer');
 
+    if(loginContainer) {
+        loginContainer.style.display = 'none';
+    }
+
     if(lockIcon && loginContainer) {
         lockIcon.addEventListener('click', (e) => {
             e.stopPropagation();
