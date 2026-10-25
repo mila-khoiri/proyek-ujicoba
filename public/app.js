@@ -485,7 +485,7 @@ if(imageInput) {
 
 document.addEventListener('DOMContentLoaded', () => {
     const lockIcon = document.getElementById('lock-icon');
-    const loginContainer = document.getElementById('authSection');
+    const loginContainer = document.getElementById('loginFormContainer');
 
     if(lockIcon && loginContainer) {
         lockIcon.addEventListener('click', (e) => {
