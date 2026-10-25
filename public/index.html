@@ -4,10 +4,10 @@
 <section id="authSection" style="background: white; padding: 16px; border-radius: 12px; border: 1px solid #e2e801; margin-bottom: 24px;">
     <span id="lock-icon" style="cursor: pointer; font-size: 24px;" title="Admin Login">🔐</span>
     
-    <div id="loginFormContainer">
+    <div id="loginFormContainer" style="display: none; margin-top: 10px;">
         <h3 style="margin-bottom: 10px;">🔐Login Admin</h3>
 
-        <form id="loginForm" style="display: none; margin-top: 10px; padding: 15px; background: #fff; border: 1px solid #eee; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);position: absolute; z-index: 1000;">
+        <form id="loginForm">
             <input type="text" id="authUsername" placeholder="Username" required style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5f2;"/>
             <input type="password" id="authPassword" placeholder="Password" required style="padding: 8px; border-radius: 6px; border: 1px solid#cbd5f2;"/>
             <button type="submit" style="background: #4f46f6; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer;">Login</button>
