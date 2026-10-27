@@ -463,7 +463,7 @@ if(editImageInput && editImagePreview) {
 }
 
 if(imageInput) {
-    imageInput.addEventListener('change', (e) => {
+    imageInput.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if(!file) return;
 
@@ -474,12 +474,72 @@ if(imageInput) {
             return;
         }
 
-        const maxSize = 2 * 1024 * 1024;
-        if(file.size > maxSize) {
-            alert('Ukuran file terlalu besar! Maksimal ukuran gambar adalah 2MB.');
-            imageInput.value = '';
+        if(!file.type.startsWith('image/')) {
+            alert('Harap unggah file gambar!');
             return;
         }
+
+        try {
+            const compressedFile = await compressImage(file, 800, 800, 0.7);
+
+            console.log(`Ukuran asli: ${(file.size / 1024).toFixed(2)} KB`);
+            console.log(`Ukuran setelah kompres: ${(compressedFile.size / 1024).toFixed(2)} KB`);
+
+        } catch(error) {
+            console.error('Gagal mengompres gambar:', error);
+        }
+    });
+}
+
+function compressImage(file, maxWidth, maxHeight, quality) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                let width = img.width;
+                let height = img.height;
+
+                if(width > height) {
+                    if(width > maxWidth) {
+                        height = Math.round((height * maxWidth) / width);
+                        width = maxWidth;
+                    }
+                } else {
+                    if(height > maxHeight) {
+                        width = Math.round((width * maxHeight) / height);
+                        height = maxHeight;
+                    }
+                }
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.heigth = heigth;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                canvas.toBlob(
+                    (blob) => {
+                        if(!blob) {
+                            reject(new Error('Canvas to Blob failed'));
+                            return;
+                        }
+
+                        const compressedFile = new File([blob], file.name, {
+                            type: 'image/jpeg',
+                            lastModified: Date.now(),
+                        });
+                        resolve(compressedFile);
+                    },
+                    'image/jpeg',
+                    quality
+                );
+            };
+            img.onerror = (error) => reject(error);
+        };
+        reader.onerror = (error) => reject(error);
     });
 }
 
