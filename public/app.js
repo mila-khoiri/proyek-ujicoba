@@ -25,7 +25,7 @@ function renderProductCards(productsToRender) {
         card.className = 'product-card';
 
         let productHtml = `
-            <img src="${product.imageUrl}" alt="${product.name}" style="width: 100%; max-width: 200px;"/>
+            <img src="${product.imageUrl}" alt="${product.name}" style="width: 100%; max-width: 200px; cursor: pointer;" onclick="openImageModal('${product.imageUrl}')"/>
             <h3>${product.name}</h3>
             <p>Rp ${product.price}</p>
             <p>${product.description}</p>
@@ -565,6 +565,33 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click', (e) => {
             if(!loginContainer.contains(e.target) && e.target !== lockIcon) {
                 loginContainer.style.display = 'none';
+            }
+        });
+    }
+});
+
+function openImageModal(imageUrl) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+
+    if(modal && modalImg) {
+        modal.style.display = 'block';
+        modalImg.src = imageUrl;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('imageModal');
+    const closeModal = document.getElementById('closeModal');
+
+    if(closeModal && modal) {
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) {
+                modal.style.display = 'none';
             }
         });
     }
