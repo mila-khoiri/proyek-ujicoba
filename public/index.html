@@ -2,20 +2,21 @@
 <html lang="id">
 
 <section id="authSection" style="background: white; padding: 10px; border-radius: 12px; border: 1px solid #e2e801;">
-    <span id="lock-icon" style="width: 50px; cursor: pointer; font-size: 24px; width: 10px; height: 10px;" title="Admin Login">🔐</span>
-    
-    <div id="loginFormContainer" style="display: none; margin-top: 10px; width: fit-content;">
-        <h3 style="margin-bottom: 10px;">Login Admin</h3>
-
-        <form id="loginForm">
-            <input type="text" id="authUsername" placeholder="Username" required style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5f2;"/>
-            <input type="password" id="authPassword" placeholder="Password" required style="padding: 8px; border-radius: 6px; border: 1px solid#cbd5f2;"/>
-            <button type="submit" style="background: #4f46f6; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer;">Login</button>
-        </form>
+    <div style="position: absolute; top: 15px; left: 15px; z-index: 1000;">
+        <span id="lock-icon" style="cursor: pointer; font-size: 20px; background: white; padding: 8px; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1);" title="Admin Login">🔐</span>
         
-        <button type="button" id="registerBtn" style="background: #64749c; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Register</button>
-    </div>
+        <div id="loginFormContainer" style="display: none; margin-top: 8px; padding: 15px; background: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); width: 250px;">
+            <h3 style="margin-bottom: 10px; font-size: 16px;">Login Admin</h3>
 
+            <form id="loginForm">
+                <input type="text" id="authUsername" placeholder="Username" required style="width: 100%; padding: 6px; margin-bottom: 8px; box-sizing: border-box;"/>
+                <input type="password" id="authPassword" placeholder="Password" required style="width: 100%; padding: 6px; margin-bottom: 8px; box-sizing: border-box;"/>
+                <button type="submit" style="width: 100%; background: #4f46f6; color: white; border: none; padding: 6px; border-radius: 4px; cursor: pointer;">Login</button>
+            </form>
+            
+            <button type="button" id="registerBtn" style="width: 100%; background: #64749c; color: white; border: none; padding: 6px; border-radius: 4px; margin-top: 6px; cursor: pointer;">Register</button>
+        </div>
+    </div>
     <div id="userInfoContainer" style="display: none; justify-content: space-between; align-items: center;">
         <p>Selamat datang, Admin! 👋</p>
         <button id="logoutBtn" style="background: #ef4455; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;">Logout</button>
